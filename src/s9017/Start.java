@@ -14,6 +14,14 @@ public class Start {
 		
 		
 		Intel.wyswietl_Procesor();
+		
+		System.out.println("Procesor Pentium ma gniazdo typu: " + Intel.szukaj_Procesor("Pentium").getGniazdoP());
+		
+		Intel.usun_Procesor("Celeron");
+		
+		Intel.edytuj_Procesor("Pentium", "Pentium 4");
+		
+		Intel.wyswietl_Procesor();
 	}
 
 }

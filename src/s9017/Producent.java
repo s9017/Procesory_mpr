@@ -32,5 +32,19 @@ public class Producent {
 			
 		}
 	}
-	
+	public Procesory szukaj_Procesor(String string){
+		Procesory z = null;
+		for(Procesory p : procesory){
+			if(p.getNazwaP().equals(string)) z = p;
+		}
+		return z;
+	}
+	public void usun_Procesor(String string){
+		procesory.remove(szukaj_Procesor(string));
+	}
+	public void edytuj_Procesor(String string1, String string2){
+		Procesory p;
+		p = szukaj_Procesor(string1);
+		p.setNazwaP(string2);
+	}
 }
