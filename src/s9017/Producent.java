@@ -22,6 +22,16 @@ public class Producent {
 	private List<Procesory> procesory = new ArrayList<Procesory>();
 	
 	
+	public List<Procesory> getProcesory() {
+		return procesory;
+	}
+	
+	public Procesory getProcesor(int i){
+		return procesory.get(i);
+		}
+
+
+
 	public void dodaj_Procesor(String nazwaP, String gniazdoP) {
 		procesory.add(new Procesory(nazwaP,gniazdoP));
 	}
