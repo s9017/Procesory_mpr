@@ -1,5 +1,7 @@
 package s9017;
 
+import s9017.services.ProcesoryDB;
+
 public class Start {
 
 	/**
@@ -22,6 +24,10 @@ public class Start {
 		Intel.edytuj_Procesor("Pentium", "Pentium 4");
 		
 		Intel.wyswietl_Procesor();
+		
+		Procesory p = Intel.getProcesor(0);
+		ProcesoryDB db = new ProcesoryDB();
+		db.addProcesory(p);
 	}
 
 }
