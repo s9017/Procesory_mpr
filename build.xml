@@ -1,52 +1,90 @@
-<?xml version="1.0" encoding="UTF-8"?>
 
-<project name="Procesory_mpr" default="compile">
-
-<property name="lib" location="lib">
-</property>
-<property name="bin" location="bin">
-</property>
-<property name="dist" location="dist">
-</property>
-<property name="src" location="src">
-</property>
-<property name="test" location="test">
-</property>
-
-<target name="initiate">
-<tstamp />
-<mkdir dir="${bin}" />
-<mkdir dir="${dist}" />
-<mkdir dir="${testbin}" />
-</target>
-
-<path id="classpath">
-<fileset dir="${lib}" includes="**/*.jar">
-</fileset>
-<pathelement location="${bin}" />
-</path>
-
-<target name="compile" depends="initiate">
-<javac srcdir="${src}" destdir="${bin}" classpathref="classpath" includeantruntime="false">
-</javac>
-</target>
-
-<target name="jar" depends="compile">
-<jar destfile="dist/antdemo-${DSTAMP}.jar" basedir="bin">
-</jar>
-</target>
-
-<target name="clean">
-<delete dir="${bin}">
-</delete>
-<delete dir="${dist}">
-</delete>
-<delete dir="${testbin}">
-</delete>
-</target>
-
-<target name="run" depends="compile">
-<java classname="Procesory_mpr.Main" classpathref="classpath" />
-</target>
-
+<?xml version="1.0" encoding="iso-8859-2"?>
+<project name="Procesory_mpr"  default="all">
+       
+ 
+        <property file="build.properties" />
+        <property name="target" value="./bin/" />
+        <property name="target.classes" value="./bin/classes/" />
+        <property name="target.test" value="./bin-test/" />
+        <property name="target.jar" value="./bin/jar" />
+        <property name="lib" value="lib" />
+        <property name="lib.junit" value="junit.jar" />
+        <property name="reports.tests" value="./bin-test/raport/" />
+        <property name="src" value="./src/s9017.test" />
+        <property name="src.test" value="./test" />
+        <property name="main.package" value="s9017" />
+        <property name="main.package.dir" value="s9017" />
+ 
+        <target name="clean" description="Usuwa katalogi ze skompilowanym kodem">
+                <delete includeemptydirs="true" failonerror="no">
+                        <fileset dir="${target.classes}" includes="**/*" />
+                </delete>
+                <delete includeemptydirs="true" failonerror="no">
+                        <fileset dir="${target}" includes="**/*" />
+                </delete>
+                <delete includeemptydirs="true" failonerror="no">
+                        <fileset dir="${target.test}" includes="**/*" />
+                </delete>
+        </target>
+ 
+        <target name="create" depends="clean" description="Tworzy strukturę projektu">
+                <mkdir dir="${src}/${main.package.dir}" />
+                <mkdir dir="${src.test}/${main.package.dir}" />
+                <mkdir dir="${target.classes}" />
+                <mkdir dir="${target.test}" />
+                <mkdir dir="${target.jar}" />
+                <mkdir dir="${lib}" />
+                <mkdir dir="${reports.tests}" />
+        </target>
+ 
+        <target name="compile" depends="create" description="kompiluje kod">
+                <javac srcdir="${src}" destdir="${target.classes}" />
+        </target>
+ 
+        <target name="test-compile" description="kompiluje kod" depends="compile">
+                <javac srcdir="${src.test}" destdir="${target.test}" classpath="${lib.junit};${target.classes}" />
+        </target>
+ 
+        <target name="run-test" depends="test-compile" description="Uruchamia testy jednostkowe">
+                <junit>
+                        <classpath>
+                                <pathelement location="${lib}" />
+                                <pathelement location="${lib.junit}" />
+                                <pathelement path="${target.classes}" />
+                                <pathelement path="${target.test}" />
+                        </classpath>
+                        <batchtest fork="yes" todir="${reports.tests}">
+                                <fileset dir="${src.test}">
+                                        <include name="**/*Test.java" />
+                                </fileset>
+                        </batchtest>
+                        <formatter type="xml" />
+                </junit>
+        </target>
+ 
+        <target name="package" depends="compile" description="tworzy plik jar">
+                <jar destfile="${target.jar}/app.jar">
+                        <fileset dir="${target.classes}" />
+                </jar>
+        </target>
+ 
+        <target name="test-package" depends="test-compile" description="tworzy plik jar z testami">
+                <jar destfile="${target.jar}/app-test.jar">
+                        <fileset dir="${target.test}" />
+                </jar>
+        </target>
+ 
+        <target name="src-package" description="tworzy plik jar ze źródłami i źródłami testów">
+                <jar destfile="${target.jar}/app-src.jar">
+                        <fileset dir="${src}" />
+                </jar>
+                <jar destfile="${target.jar}/app-src-test.jar">
+                        <fileset dir="${src.test}" />
+                </jar>
+        </target>
+ 
+      
+ 
+        <target name="all" depends="package,test-package,src-package"></target>
 </project>
