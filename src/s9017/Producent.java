@@ -35,6 +35,9 @@ public class Producent {
 	public void dodaj_Procesor(String nazwaP, String gniazdoP) {
 		procesory.add(new Procesory(nazwaP,gniazdoP));
 	}
+	public void dodaj_Procesor_O(Procesory proc){
+                procesory.add(proc);
+        }
 	public void wyswietl_Procesor(){
 		System.out.println("Lista procesorow: ");
 		for(Procesory p: procesory){
